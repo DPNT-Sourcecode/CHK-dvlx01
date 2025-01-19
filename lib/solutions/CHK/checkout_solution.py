@@ -18,7 +18,7 @@ def checkout(skus):
     }
 
     # Checking for invalid input - if the input `skus` is not a string or contains invalid characters
-    if not isinstance(skus, str) or not all(c.isalpha() and c.isupper() for c in skus):
+    if not isinstance(skus, str) or not all(c in prices for c in skus):
         return -1
     
     # Counting the occurences of each SKU
@@ -34,9 +34,10 @@ def checkout(skus):
         if item in offers:
             offer_quantity, offer_price = offers[item]
             total_price += (count // offer_quantity) * offer_price  # Applying the offer
-            total_price += (count & offer_quantity) * prices[item]  # Adding the remaining items at their regular price
+            total_price += (count % offer_quantity) * prices[item]  # Adding the remaining items at their regular price
         else:
             total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
+
 
