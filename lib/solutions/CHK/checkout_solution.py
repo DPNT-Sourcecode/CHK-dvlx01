@@ -39,5 +39,3 @@ def checkout(skus):
             total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
-
-
