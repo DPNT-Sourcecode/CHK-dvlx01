@@ -9,7 +9,8 @@ def checkout(skus):
         'B': 30,
         'C': 20,
         'D': 15,
-        'E': 40
+        'E': 40,
+        'F': 10
     }
 
     # Special offers
@@ -19,7 +20,8 @@ def checkout(skus):
     }
 
     bonus_offers = {
-        'E': ('B', 2)  # Buy 2E get one B free
+        'E': ('B', 2),  # Buy 2E get one B free
+        'F': ('F', 3)  # Buy 2F get one F free
         }
 
     # Checking for invalid input - if the input `skus` is not a string or contains invalid characters
@@ -35,6 +37,7 @@ def checkout(skus):
     for item, (bonus_item, required_quantity) in bonus_offers.items():
         if item in counts and bonus_item in counts:
             free_items = counts[item] // required_quantity  # Calculating how many bonuses to apply
+            
             counts[bonus_item] = max(0, counts[bonus_item] - free_items)  # Reducing the count of free items (B in this case)
 
     # Applying special offers and calculating the total price
@@ -50,4 +53,5 @@ def checkout(skus):
             total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
+
 
