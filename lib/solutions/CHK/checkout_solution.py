@@ -81,12 +81,12 @@ def checkout(skus):
     while group_count >= group_offer_quantity:
         total_price += group_offer_price
         group_count -= group_offer_quantity
-        for item in sorted(group_offer_items, key=lambda x:prices[x], reverse=True):
+        for item in sorted(group_offer_items, key=lambda x: prices[x], reverse=True):  # Using items for the group discount, prioritising higher-priced items
             if counts[item] >0:
-                used = min(counts[item], group_offer_quantity)
-                counts[item] -= used
+                used = min(counts[item], group_offer_quantity)  # Using as many needed for  that group
+                counts[item] -= used  # Deducting the used items from counts
                 group_offer_quantity -= used
-                if group_offer_quantity == 0:
+                if group_offer_quantity == 0:  # Exiting once enough items have been used
                     break
         group_offer_quantity = 3  # Resetting for next group
 
@@ -101,6 +101,7 @@ def checkout(skus):
             total_price += count * prices[item]
 
     return total_price
+
 
 
 
