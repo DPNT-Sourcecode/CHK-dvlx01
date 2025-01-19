@@ -37,8 +37,10 @@ def checkout(skus):
     for item, (bonus_item, required_quantity) in bonus_offers.items():
         if item in counts and bonus_item in counts:
             free_items = counts[item] // required_quantity  # Calculating how many bonuses to apply
-            
-            counts[bonus_item] = max(0, counts[bonus_item] - free_items)  # Reducing the count of free items (B in this case)
+            if bonus_item == item:  # Handling "self-bonus" (like for 'F')
+                counts[item] -= free_items  # Each £Fs count as 2F prices, 1F free
+            elif bonus_item in counts:
+                counts[bonus_item] = max(0, counts[bonus_item] - free_items)  # Reducing the count of free items (B in this case)
 
     # Applying special offers and calculating the total price
     for item, count in counts.items():
@@ -46,12 +48,12 @@ def checkout(skus):
             for offer_quantity, offer_price in sorted(special_offers[item], reverse=True):  # Applying the best offers in descending order of quantity
                 total_price += (count // offer_quantity) * offer_price  # Applying the offer
                 count %= offer_quantity
-        
             # Adding the remaining items at their regular price
             total_price += count * prices[item]
         else:
             total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
+
 
 
