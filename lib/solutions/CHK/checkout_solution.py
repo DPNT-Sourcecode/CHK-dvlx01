@@ -44,10 +44,10 @@ def checkout(skus):
                 total_price += (count // offer_quantity) * offer_price  # Applying the offer
                 count %= offer_quantity
         
-        # Adding the remaining items at their regular price
-            total_price += count * prices[item]  # No special offer, regular price
-
+            # Adding the remaining items at their regular price
+            total_price += count * prices[item]
         else:
+            total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
 
