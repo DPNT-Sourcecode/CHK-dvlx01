@@ -54,7 +54,7 @@ def checkout(skus):
     }
 
     # Group discount offer
-    group_offer_itmes = ['S', 'T', 'X', 'Y', 'Z']
+    group_offer_items = ['S', 'T', 'X', 'Y', 'Z']
     group_offer_price = 45
     group_offer_quantity = 3
 
@@ -77,21 +77,28 @@ def checkout(skus):
                 counts[bonus_item] = max(0, counts[bonus_item] - free_items)
 
     # Applying group discount offer
-    group_count = sum(counts[item] for item in group_offer_itmes)
+    group_count = sum(counts[item] for item in group_offer_items)
     while group_count >= group_offer_quantity:
         total_price += group_offer_price
-        group_count -= group
+        group_count -= group_offer_quantity
+        for item in sorted(group_offer_items, key=lambda x:prices[x], reverse=True):
+            if counts[item] >0:
+                used = min(counts[item], group_offer_quantity)
+                counts[item] -= used
+                group_offer_quantity -= used
+                if group_offer_quantity == 0:
+                    break
+        group_offer_quantity = 3  # Resetting for next group
 
     # Applying multi-offers and calculating the total price
     for item, count in counts.items():
         if item in multi_offers:
-            for offer_quantity, offer_price in sorted(multi_offers[item], reverse=True):  # Applying the best offers in descending order of quantity
-                total_price += (count // offer_quantity) * offer_price  # Applying the offer
+            for offer_quantity, offer_price in sorted(multi_offers[item], reverse=True):
+                total_price += (count // offer_quantity) * offer_price
                 count %= offer_quantity
-            # Adding the remaining items at their regular price
             total_price += count * prices[item]
         else:
-            total_price += count * prices[item]  # No special offer, regular price
+            total_price += count * prices[item]
 
     return total_price
 
