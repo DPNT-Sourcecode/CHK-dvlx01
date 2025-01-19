@@ -8,14 +8,19 @@ def checkout(skus):
         'A': 50,
         'B': 30,
         'C': 20,
-        'D': 15
+        'D': 15,
+        'E': 40
     }
 
     # Special offers
     offers = {
-        'A': (3, 130),
-        'B': (2, 45)    
+        'A': [(5, 200), (3, 130)],
+        'B': [(2, 45)]    
     }
+
+    bonus_offers = {
+        'E': ('B', 2)  # Buy 2E get one B free
+        }
 
     # Checking for invalid input - if the input `skus` is not a string or contains invalid characters
     if not isinstance(skus, str) or not all(c in prices for c in skus):
