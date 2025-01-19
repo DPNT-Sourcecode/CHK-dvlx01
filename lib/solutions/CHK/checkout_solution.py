@@ -30,5 +30,13 @@ def checkout(skus):
         if item not in prices:  # Unkown SKU
             return -1
         
-        # Checking ig there is a specia offer for the 
+        # Checking if there is a special offer for the current item
+        if item in offers:
+            offer_quantity, offer_price = offers[item]
+            total_price += (count // offer_quantity) * offer_price  # Applying the offer
+            total_price += (count & offer_quantity) * prices[item]  # Adding the remaining items at their regular price
+        else:
+            total_price += count * prices[item]  # No special offer, regular price
+
+    return total_price
 
