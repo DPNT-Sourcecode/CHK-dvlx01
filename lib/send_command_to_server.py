@@ -19,7 +19,7 @@ from runner.user_input_action import get_user_input
        Run this file from the IDE.
  
     From command line:
-       PYTHONPATH=lib python lib/send_command_to_server.py
+       PYTHONPATH=lib python lib/PYTHONPATH=lib python lib/send_command_to_server.py
  
     To run your unit tests locally:
        PYTHONPATH=lib python -m pytest -q test/solution_tests/
