@@ -29,8 +29,15 @@ def checkout(skus):
     # Counting the occurences of each SKU
     counts = Counter(skus)
 
-    #  Calculating the total price
     total_price = 0
+
+    # Applying bonus offers
+    for item, (bonus_item, required_quantity) in bonus_offers.items():
+        if item in counts and bonus_item in counts:
+            free_items = counts[item] // required_quantity  # Calculating how many bonuses to apply
+            counts[bonus_item] = max(0, counts[bonus_item] - free_items)  # Reducing the count of free items (B in this case)
+            
+    #  Calculating the total price
     for item, count in counts.items():
         if item not in prices:  # Unkown SKU
             return -1
@@ -44,3 +51,4 @@ def checkout(skus):
             total_price += count * prices[item]  # No special offer, regular price
 
     return total_price
+
