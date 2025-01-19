@@ -13,7 +13,7 @@ def checkout(skus):
     }
 
     # Special offers
-    offers = {
+    special_offers = {
         'A': [(5, 200), (3, 130)],
         'B': [(2, 45)]    
     }
@@ -36,19 +36,18 @@ def checkout(skus):
         if item in counts and bonus_item in counts:
             free_items = counts[item] // required_quantity  # Calculating how many bonuses to apply
             counts[bonus_item] = max(0, counts[bonus_item] - free_items)  # Reducing the count of free items (B in this case)
-            
-    #  Calculating the total price
+
+    # Applying special offers and calculating the total price
     for item, count in counts.items():
-        if item not in prices:  # Unkown SKU
-            return -1
+        if item in special_offers:
+            for offer_quantity, offer_price in sorted(special_offers[item], reverse=True):  # Applying the best offers in descending order of quantity
+                total_price += (count // offer_quantity) * offer_price  # Applying the offer
+                count %= offer_quantity
         
-        # Checking if there is a special offer for the current item
-        if item in offers:
-            offer_quantity, offer_price = offers[item]
-            total_price += (count // offer_quantity) * offer_price  # Applying the offer
-            total_price += (count % offer_quantity) * prices[item]  # Adding the remaining items at their regular price
-        else:
+        # Adding the remaining items at their regular price
             total_price += count * prices[item]  # No special offer, regular price
+
+        else:
 
     return total_price
 
